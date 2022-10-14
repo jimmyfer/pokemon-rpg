@@ -1,0 +1,27 @@
+$primary-color: white;
+$bg: black;
+h1 {
+  color: $primary-color;
+  background-color: $bg;
+}
+
+body {
+  margin: 0;
+  .game-container {
+    background-color: rgb(31, 31, 31);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .game-screen {
+    background-color: rgb(66, 66, 66);
+    width: 512px;
+    height: 512px;
+    overflow: hidden;
+  }
+
+  .game-scene {
+  }
+}
