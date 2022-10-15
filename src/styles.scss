@@ -13,6 +13,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    position: relative;
   }
 
   .game-screen {
@@ -20,8 +21,153 @@ body {
     width: 512px;
     height: 512px;
     overflow: hidden;
+    position: absolute;
   }
 
   .game-scene {
+  }
+
+  .game-map {
+    position: absolute;
+    left: -224px;
+    top: -64px;
+    .cell-container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .player {
+      width: 35px;
+      height: 52px;
+      background: url('./assets/img/rocket.png') -135px -157px;
+      background-size: 875px;
+      z-index: 2;
+    }
+
+    .player-base {
+      position: absolute;
+      top: -20px;
+      background-size: 875px;
+      z-index: 2;
+    }
+
+    .player-left {
+      background: url('./assets/img/rocket.png') -135px -95px;
+    }
+
+    .player-left-active {
+      right: 10px;
+      background: url('./assets/img/rocket.png') -198px -95px;
+    }
+
+    .player-left-active-two {
+      right: 20px;
+      background: url('./assets/img/rocket.png') -135px -95px;
+    }
+
+    .player-left-active-thre {
+      right: 30px;
+      background: url('./assets/img/rocket.png') -198px -95px;
+    }
+
+    .player-right {
+      background: url('./assets/img/rocket.png') -135px -157px;
+      z-index: 2;
+    }
+
+    .player-right-active {
+      right: -10px;
+      background: url('./assets/img/rocket.png') -198px -157px;
+    }
+
+    .player-right-active-two {
+      right: -20px;
+      background: url('./assets/img/rocket.png') -135px -157px;
+    }
+
+    .player-right-active-thre {
+      right: -30px;
+      background: url('./assets/img/rocket.png') -198px -157px;
+    }
+
+    .player-front {
+      background: url('./assets/img/rocket.png') -135px -28px;
+    }
+
+    .player-front-active {
+      top: -10px;
+      background: url('./assets/img/rocket.png') -198px -28px;
+    }
+
+    .player-front-active-two {
+      top: 0px;
+      background: url('./assets/img/rocket.png') -135px -28px;
+    }
+
+    .player-front-active-thre {
+      top: 10px;
+      background: url('./assets/img/rocket.png') -198px -28px;
+    }
+
+    .player-up {
+      top: -20px;
+      background: url('./assets/img/rocket.png') -135px -220px;
+    }
+
+    .player-up-active {
+      top: -30px;
+      background: url('./assets/img/rocket.png') -198px -220px;
+    }
+
+    .player-up-active-two {
+      top: -40px;
+      background: url('./assets/img/rocket.png') -135px -220px;
+    }
+
+    .player-up-active-thre {
+      top: -50px;
+      background: url('./assets/img/rocket.png') -198px -220px;
+    }
+
+    .sprite-1 {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: url('./assets/img/sprites.png') -2px -306px;
+      background-size: 1628px;
+    }
+
+    .sprite-2 {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: url('./assets/img/sprites.png') -300px -235px;
+      background-size: 1628px;
+    }
+    .sprite-3 {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: url('./assets/img/sprites.png') -300px -272px;
+      background-size: 1628px;
+    }
+    .sprite-4 {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: url('./assets/img/sprites.png') -36px -340px;
+      background-size: 1628px;
+      z-index: 1;
+    }
+    .sprite-5 {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: url('./assets/img/sprites.png') -70px -376px;
+      background-size: 1628px;
+      z-index: 3;
+    }
   }
 }

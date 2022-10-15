@@ -12,14 +12,13 @@ export class GameBuilder {
 
     const gameStartScene = new StartScene(gameScreen);
     gameStartScene.startScene();
+    gameStartScene.removeScene();
 
     const gameplayScene = new GamePlayScene(gameScreen);
     gameplayScene.startScene();
 
-    const battleScene = new BattleScene(gameplayScene);
-    battleScene.startScene();
-
-    // gameStartScene.removeScene();
+    // const battleScene = new BattleScene(gameplayScene);
+    // battleScene.startScene();
     // gameplayScene.removeScene();
   }
 }
