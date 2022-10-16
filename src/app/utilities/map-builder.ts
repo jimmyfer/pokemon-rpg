@@ -2,26 +2,36 @@ export interface PokemonMap {
   sprites: string[];
   allowEntity?: boolean;
   player?: boolean;
-  playerMovementActive?: {
+  playerMovementActive: {
     active: boolean;
     class: string;
   };
   nextCellAvaible?: boolean;
+  node: HTMLElement;
 }
 
 export abstract class MapBuilder {
   protected map: PokemonMap[][] = [];
 
-  public playerPositionX: number = 0;
-  public playerPositionY: number = 0;
-  public playerBasePosition: string = 'player-front';
-
   buildMap(xCells: number, yCells: number): PokemonMap[][] {
     return new Array<null>(xCells).fill(null).map(() =>
       new Array<null>(yCells).fill(null).map(() => ({
         sprites: ['sprite-1'],
+        allowEntity: true,
+        node: this.buildCell(),
+        playerMovementActive: {
+          active: false,
+          class: '',
+        },
       }))
     );
+  }
+
+  buildCell(): HTMLElement {
+    const cellMap = document.createElement('div');
+    cellMap.classList.add('game-cell');
+    cellMap.style.cssText = 'width: 32px; height: 32px;';
+    return cellMap;
   }
 
   // buildCellRow(

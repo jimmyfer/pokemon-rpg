@@ -13,14 +13,17 @@ export class GamePlayScene extends GameScene {
     super(screen, scene);
     this.scene = scene;
     this.screen = screen;
-    this.mapService = new PokeMapService();
+    this.mapService = PokeMapService.getInstance();
   }
 
   async startScene(): Promise<void> {
     this.scene.classList.add('gameplay-scene');
     const routeMap = new RouteOne();
+    console.log(this.mapService.activeMap[0]);
     this.mapService.activeMap = routeMap.getMap();
     this.mapService.mapDimensions = routeMap.mapDimensions;
+
+    console.log(this.mapService.activeMap);
     await this.generateMap();
     this.screen.addScene(this.scene);
   }
@@ -28,8 +31,8 @@ export class GamePlayScene extends GameScene {
   async generateMap(): Promise<void> {
     const gameMap = document.createElement('div');
     gameMap.classList.add('game-map');
-    const mapWidth = this.mapService.mapDimensions[0] * 32;
-    const mapHeigth = this.mapService.mapDimensions[1] * 32;
+    const mapWidth = this.mapService.mapDimensions[1] * 32;
+    const mapHeigth = this.mapService.mapDimensions[0] * 32;
     gameMap.style.cssText = `width: ${mapWidth}px; height: ${mapHeigth}px;`;
     const cellContainer = document.createElement('div');
     cellContainer.classList.add('cell-container');
@@ -37,12 +40,19 @@ export class GamePlayScene extends GameScene {
     this.scene.appendChild(gameMap);
     this.mapService.activeMap.forEach(map => {
       map.forEach(map => {
-        const cellMap = document.createElement('div');
-        cellMap.classList.add('game-cell');
-        map.sprites.forEach(sprite => cellMap.classList.add(sprite));
-        cellMap.style.cssText =
-          'width: 32px; height: 32px; background-color: red;';
-        cellContainer.appendChild(cellMap);
+        map.sprites.forEach(sprite => {
+          const cellSprite = document.createElement('div');
+          cellSprite.classList.add(sprite);
+          map.node.appendChild(cellSprite);
+        });
+        if (map.player && map.playerMovementActive) {
+          const playerSprite = document.createElement('div');
+          playerSprite.classList.add('player');
+          playerSprite.classList.add('player-base');
+          playerSprite.classList.add(map.playerMovementActive.class);
+          map.node.appendChild(playerSprite);
+        }
+        cellContainer.appendChild(map.node);
       });
     });
   }

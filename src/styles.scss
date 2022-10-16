@@ -36,6 +36,9 @@ body {
       height: 100%;
       display: flex;
       flex-wrap: wrap;
+      .game-cell {
+        position: relative;
+      }
     }
 
     .player {
