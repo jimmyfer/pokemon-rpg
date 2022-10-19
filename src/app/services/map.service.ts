@@ -19,10 +19,24 @@ export class PokeMapService {
     return this.instance;
   }
 
+  refreshPlayerCell(position: PokemonMap): void {
+    position.node.childNodes.forEach(node => {
+      if ((node as HTMLElement).classList.contains('player')) {
+        node.remove();
+        const playerSprite = document.createElement('div');
+        playerSprite.classList.add('player');
+        playerSprite.classList.add('player-base');
+        playerSprite.classList.add(position.playerMovementActive.class);
+        position.node.appendChild(playerSprite);
+      }
+    });
+  }
+
   refreshPlayerPosition(
     oldPosition: PokemonMap,
     newPosition: PokemonMap
   ): void {
+    oldPosition.playerMovementActive.class = '';
     oldPosition.node.childNodes.forEach(node => {
       if ((node as HTMLElement).classList.contains('player')) {
         node.remove();

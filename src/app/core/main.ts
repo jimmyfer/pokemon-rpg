@@ -16,6 +16,7 @@ export class GameBuilder {
 
     const gameplayScene = new GamePlayScene(gameScreen);
     gameplayScene.startScene();
+    gameplayScene.removeScene();
 
     // const battleScene = new BattleScene(gameplayScene);
     // battleScene.startScene();
