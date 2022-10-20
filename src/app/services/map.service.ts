@@ -1,3 +1,4 @@
+import { MovementSubject } from '../utilities/movement-helper';
 import { PokemonMap } from '../utilities/map-builder';
 
 export class PokeMapService {
@@ -10,6 +11,8 @@ export class PokeMapService {
   playerPositionX: number = 0;
   playerPositionY: number = 0;
   playerBasePosition = '';
+
+  movementListener = new MovementSubject();
 
   public static getInstance(): PokeMapService {
     if (!this.instance) {

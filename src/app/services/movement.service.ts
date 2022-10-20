@@ -1,4 +1,5 @@
 import { PokemonMap } from 'app/utilities/map-builder';
+import { PlayerMovement } from '../utilities/movement-helper';
 import { PokeMapService } from './map.service';
 
 export class MovementService {
@@ -10,7 +11,7 @@ export class MovementService {
 
   playerMoving = false;
 
-  walkVelocity = 3000;
+  walkVelocity = 120;
 
   constructor() {
     this.mapService = PokeMapService.getInstance();
@@ -53,7 +54,7 @@ export class MovementService {
     }
   }
 
-  movePlayerUpCell(): void {
+  async movePlayerUpCell(): Promise<void> {
     const playerPositionX = this.mapService.playerPositionX;
     const playerPositionY = this.mapService.playerPositionY;
     const playerPosition =
@@ -63,64 +64,28 @@ export class MovementService {
       this.mapService.refreshPlayerCell(playerPosition);
       return;
     }
-    if (
-      this.mapService.activeMap[playerPositionX - 1][playerPositionY]
-        .allowEntity === true &&
-      !this.playerMoving
-    ) {
-      const oldPlayerPosition =
-        this.mapService.activeMap[playerPositionX][playerPositionY];
-      this.playerMoving = true;
-      oldPlayerPosition.player = false;
-      oldPlayerPosition.playerMovementActive.class = '';
-      this.mapService.playerPositionX--;
-      const newPlayerPosition =
-        this.mapService.activeMap[this.mapService.playerPositionX][
-          playerPositionY
-        ];
-      newPlayerPosition.player = true;
-      newPlayerPosition.playerMovementActive.class = 'player-up';
-      this.mapService.refreshPlayerPosition(
-        oldPlayerPosition,
-        newPlayerPosition
-      );
-      this.playerMoving = false;
-    }
+    await this.checkNextCellIsAvailable(
+      playerPositionX,
+      playerPositionY,
+      PlayerMovement.UP
+    );
   }
 
-  movePlayerDownCell(): void {
+  async movePlayerDownCell(): Promise<void> {
     const playerPositionX = this.mapService.playerPositionX;
     const playerPositionY = this.mapService.playerPositionY;
     const playerPosition =
       this.mapService.activeMap[playerPositionX][playerPositionY];
-    if (playerPosition.playerMovementActive.class !== 'player-front') {
-      playerPosition.playerMovementActive.class = 'player-front';
+    if (playerPosition.playerMovementActive.class !== 'player-down') {
+      playerPosition.playerMovementActive.class = 'player-down';
       this.mapService.refreshPlayerCell(playerPosition);
       return;
     }
-    if (
-      this.mapService.activeMap[playerPositionX + 1][playerPositionY]
-        .allowEntity === true &&
-      !this.playerMoving
-    ) {
-      const oldPlayerPosition =
-        this.mapService.activeMap[playerPositionX][playerPositionY];
-      this.playerMoving = true;
-      oldPlayerPosition.player = false;
-      oldPlayerPosition.playerMovementActive.class = '';
-      this.mapService.playerPositionX++;
-      const newPlayerPosition =
-        this.mapService.activeMap[this.mapService.playerPositionX][
-          playerPositionY
-        ];
-      newPlayerPosition.player = true;
-      newPlayerPosition.playerMovementActive.class = 'player-front';
-      this.mapService.refreshPlayerPosition(
-        oldPlayerPosition,
-        newPlayerPosition
-      );
-      this.playerMoving = false;
-    }
+    await this.checkNextCellIsAvailable(
+      playerPositionX,
+      playerPositionY,
+      PlayerMovement.DOWN
+    );
   }
 
   async movePlayerLeftCell(): Promise<void> {
@@ -133,33 +98,14 @@ export class MovementService {
       this.mapService.refreshPlayerCell(playerPosition);
       return;
     }
-    if (
-      this.mapService.activeMap[playerPositionX][playerPositionY - 1]
-        .allowEntity === true &&
-      !this.playerMoving
-    ) {
-      this.playerMoving = true;
-
-      playerPosition.player = false;
-
-      this.mapService.playerPositionY--;
-
-      const newPlayerPosition =
-        this.mapService.activeMap[playerPositionX][
-          this.mapService.playerPositionY
-        ];
-
-      newPlayerPosition.player = true;
-
-      await this.playerMovementEffect(
-        playerPosition,
-        newPlayerPosition,
-        'left'
-      );
-    }
+    await this.checkNextCellIsAvailable(
+      playerPositionX,
+      playerPositionY,
+      PlayerMovement.LEFT
+    );
   }
 
-  movePlayerRightCell(): void {
+  async movePlayerRightCell(): Promise<void> {
     const playerPositionX = this.mapService.playerPositionX;
     const playerPositionY = this.mapService.playerPositionY;
     const playerPosition =
@@ -169,35 +115,90 @@ export class MovementService {
       this.mapService.refreshPlayerCell(playerPosition);
       return;
     }
+    await this.checkNextCellIsAvailable(
+      playerPositionX,
+      playerPositionY,
+      PlayerMovement.RIGHT
+    );
+  }
+
+  async checkNextCellIsAvailable(
+    playerPositionX: number,
+    playerPositionY: number,
+    movementDirection: PlayerMovement
+  ): Promise<void> {
+    const playerPosition =
+      this.mapService.activeMap[playerPositionX][playerPositionY];
+    let newPlayerPosition;
     if (
-      this.mapService.activeMap[playerPositionX][playerPositionY + 1]
-        .allowEntity === true &&
+      movementDirection === PlayerMovement.LEFT &&
+      this.mapService.activeMap[playerPositionX][playerPositionY - 1]
+        .allowEntity &&
       !this.playerMoving
     ) {
-      const oldPlayerPosition =
-        this.mapService.activeMap[playerPositionX][playerPositionY];
-      this.playerMoving = true;
-      oldPlayerPosition.player = false;
-      oldPlayerPosition.playerMovementActive.class = '';
-      this.mapService.playerPositionY++;
-      const newPlayerPosition =
+      this.mapService.playerPositionY--;
+      newPlayerPosition =
         this.mapService.activeMap[playerPositionX][
           this.mapService.playerPositionY
         ];
+    }
+
+    if (
+      movementDirection === PlayerMovement.RIGHT &&
+      this.mapService.activeMap[playerPositionX][playerPositionY + 1]
+        .allowEntity &&
+      !this.playerMoving
+    ) {
+      this.mapService.playerPositionY++;
+      newPlayerPosition =
+        this.mapService.activeMap[playerPositionX][
+          this.mapService.playerPositionY
+        ];
+    }
+
+    if (
+      movementDirection === PlayerMovement.UP &&
+      this.mapService.activeMap[playerPositionX - 1][playerPositionY]
+        .allowEntity &&
+      !this.playerMoving
+    ) {
+      this.mapService.playerPositionX--;
+      newPlayerPosition =
+        this.mapService.activeMap[this.mapService.playerPositionX][
+          playerPositionY
+        ];
+    }
+
+    if (
+      movementDirection === PlayerMovement.DOWN &&
+      this.mapService.activeMap[playerPositionX + 1][playerPositionY]
+        .allowEntity &&
+      !this.playerMoving
+    ) {
+      this.mapService.playerPositionX++;
+      newPlayerPosition =
+        this.mapService.activeMap[this.mapService.playerPositionX][
+          playerPositionY
+        ];
+    }
+
+    if (newPlayerPosition) {
+      this.mapService.movementListener.newPlayerMove(movementDirection);
+      this.playerMoving = true;
+      playerPosition.player = false;
       newPlayerPosition.player = true;
-      newPlayerPosition.playerMovementActive.class = 'player-right';
-      this.mapService.refreshPlayerPosition(
-        oldPlayerPosition,
-        newPlayerPosition
+      await this.playerMovementEffect(
+        playerPosition,
+        newPlayerPosition,
+        movementDirection
       );
-      this.playerMoving = false;
     }
   }
 
   async playerMovementEffect(
     playerMapPosition: PokemonMap,
     newPlayerMapPosition: PokemonMap,
-    movementDirection: string
+    movementDirection: PlayerMovement
   ): Promise<void> {
     playerMapPosition.playerMovementActive.class = `player-${movementDirection}-active`;
     this.mapService.refreshPlayerCell(playerMapPosition);

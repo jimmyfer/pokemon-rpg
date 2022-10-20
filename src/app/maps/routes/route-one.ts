@@ -13,7 +13,7 @@ export class RouteOne extends MapBuilder {
 
     this.mapService.playerPositionX = 9;
     this.mapService.playerPositionY = 14;
-    this.mapService.playerBasePosition = 'player-front';
+    this.mapService.playerBasePosition = 'player-down';
 
     for (let index = 0; index <= 29; index++) {
       this.map[0][index] = {

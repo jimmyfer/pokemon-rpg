@@ -1,3 +1,4 @@
+import { PlayerMovement } from '../../../utilities/movement-helper';
 import { RouteOne } from '../../../maps/routes/route-one';
 import { PokeMapService } from '../../../services/map.service';
 import { GameScene, Scene } from '../base-scenes/game-scene';
@@ -5,6 +6,9 @@ import { GameScene, Scene } from '../base-scenes/game-scene';
 export class GamePlayScene extends GameScene {
   scene: HTMLElement;
   screen: Scene;
+
+  absoluteLeft = -224;
+  absoluteTop = -64;
 
   mapService: PokeMapService;
 
@@ -14,6 +18,10 @@ export class GamePlayScene extends GameScene {
     this.scene = scene;
     this.screen = screen;
     this.mapService = PokeMapService.getInstance();
+
+    this.mapService.movementListener.subscribe((movement: PlayerMovement) => {
+      this.refreshGameScreen(movement);
+    });
   }
 
   async startScene(): Promise<void> {
@@ -33,7 +41,7 @@ export class GamePlayScene extends GameScene {
     gameMap.classList.add('game-map');
     const mapWidth = this.mapService.mapDimensions[1] * 32;
     const mapHeigth = this.mapService.mapDimensions[0] * 32;
-    gameMap.style.cssText = `width: ${mapWidth}px; height: ${mapHeigth}px;`;
+    gameMap.style.cssText = `width: ${mapWidth}px; height: ${mapHeigth}px;left: ${this.absoluteLeft}px;top: ${this.absoluteTop}px;`;
     const cellContainer = document.createElement('div');
     cellContainer.classList.add('cell-container');
     gameMap.appendChild(cellContainer);
@@ -55,5 +63,32 @@ export class GamePlayScene extends GameScene {
         cellContainer.appendChild(map.node);
       });
     });
+  }
+
+  refreshGameScreen(movement: PlayerMovement) {
+    if (movement === PlayerMovement.RIGHT) {
+      this.absoluteLeft = this.absoluteLeft - 32;
+      (
+        this.scene.firstChild as HTMLDivElement
+      ).style.left = `${this.absoluteLeft}px`;
+    }
+    if (movement === PlayerMovement.LEFT) {
+      this.absoluteLeft = this.absoluteLeft + 32;
+      (
+        this.scene.firstChild as HTMLDivElement
+      ).style.left = `${this.absoluteLeft}px`;
+    }
+    if (movement === PlayerMovement.UP) {
+      this.absoluteTop = this.absoluteTop + 32;
+      (
+        this.scene.firstChild as HTMLDivElement
+      ).style.top = `${this.absoluteTop}px`;
+    }
+    if (movement === PlayerMovement.DOWN) {
+      this.absoluteTop = this.absoluteTop - 32;
+      (
+        this.scene.firstChild as HTMLDivElement
+      ).style.top = `${this.absoluteTop}px`;
+    }
   }
 }
