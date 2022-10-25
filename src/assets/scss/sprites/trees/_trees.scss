@@ -1,0 +1,31 @@
+// Tree 1
+
+.tree-1-left-up-corner {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: url('./assets/img/sprites.png');
+  background-position: 0px -702px;
+}
+.tree-1-right-up-corner {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: url('./assets/img/sprites.png');
+  background-position: -32px -702px;
+}
+.tree-1-left-down-corner {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: url('./assets/img/sprites.png');
+  background-position: 0px -734px;
+}
+
+.tree-1-right-down-corner {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: url('./assets/img/sprites.png');
+  background-position: -32px -734px;
+}

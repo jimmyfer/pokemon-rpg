@@ -7,8 +7,13 @@ export class GamePlayScene extends GameScene {
   scene: HTMLElement;
   screen: Scene;
 
-  absoluteLeft = -224;
-  absoluteTop = -64;
+  buildMode = false;
+
+  absoluteLeft = -64;
+  absoluteTop = -1664;
+
+  // absoluteLeft = 0;
+  // absoluteTop = 0;
 
   mapService: PokeMapService;
 
@@ -27,11 +32,8 @@ export class GamePlayScene extends GameScene {
   async startScene(): Promise<void> {
     this.scene.classList.add('gameplay-scene');
     const routeMap = new RouteOne();
-    console.log(this.mapService.activeMap[0]);
     this.mapService.activeMap = routeMap.getMap();
     this.mapService.mapDimensions = routeMap.mapDimensions;
-
-    console.log(this.mapService.activeMap);
     await this.generateMap();
     this.screen.addScene(this.scene);
   }
@@ -48,10 +50,32 @@ export class GamePlayScene extends GameScene {
     this.scene.appendChild(gameMap);
     this.mapService.activeMap.forEach(map => {
       map.forEach(map => {
+        const cellSprite = document.createElement('div');
+        cellSprite.classList.add('base-sprite-1');
+        map.node.appendChild(cellSprite);
+
+        if (this.buildMode && map.index) {
+          const buildMode = document.createElement('div');
+          const cords = document.createElement('p');
+          cords.innerText = `${map.index?.[0]} - ${map.index?.[1]}`;
+          cords.style.fontSize = '9px';
+          cords.style.textAlign = 'center';
+          buildMode.appendChild(cords);
+          buildMode.style.zIndex = '999';
+          buildMode.style.position = 'absolute';
+          buildMode.style.border = '1px solid black';
+          buildMode.style.width = '100%';
+          buildMode.style.height = '100%';
+          map.node.appendChild(buildMode);
+        }
+
         map.sprites.forEach(sprite => {
-          const cellSprite = document.createElement('div');
-          cellSprite.classList.add(sprite);
-          map.node.appendChild(cellSprite);
+          if (sprite) {
+            const cellSprite = document.createElement('div');
+            cellSprite.classList.add(sprite.class);
+            cellSprite.style.cssText = `left:${sprite.leftDesface}px;z-index:${sprite.zIndex};top:${sprite.topDesface}px;`;
+            map.node.appendChild(cellSprite);
+          }
         });
         if (map.player && map.playerMovementActive) {
           const playerSprite = document.createElement('div');

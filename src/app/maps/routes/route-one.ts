@@ -1,192 +1,66 @@
 import { PokeMapService } from '../../services/map.service';
-import { MapBuilder, PokemonMap } from '../../utilities/map-builder';
+import { MapBuilder, PokemonMap } from '../../core/map-builder/map-builder';
 
 export class RouteOne extends MapBuilder {
-  mapDimensions = [20, 30];
-  protected map = this.buildMap(20, 30);
-
   mapService: PokeMapService;
 
   constructor() {
-    super();
+    super([72, 19]);
     this.mapService = PokeMapService.getInstance();
 
-    this.mapService.playerPositionX = 9;
-    this.mapService.playerPositionY = 14;
+    this.mapService.playerPositionX = 60;
+    this.mapService.playerPositionY = 10;
     this.mapService.playerBasePosition = 'player-down';
 
-    for (let index = 0; index <= 29; index++) {
-      this.map[0][index] = {
-        sprites: ['sprite-1', 'sprite-2'],
-        allowEntity: false,
-        nextCellAvaible: false,
-        node: this.map[0][index].node,
-        playerMovementActive: this.map[0][index].playerMovementActive,
-      };
-      this.map[1][index] = {
-        sprites: ['sprite-1', 'sprite-3'],
-        allowEntity: false,
-        nextCellAvaible: false,
-        node: this.map[1][index].node,
-        playerMovementActive: this.map[0][index].playerMovementActive,
-      };
-    }
+    // firsts tree
+    this.buildTreeColumn(1, 3, [0, 0], -10, 0, false, false, 2, 2);
 
-    for (let index = 0; index <= 29; index++) {
-      this.map[18][index] = {
-        sprites: ['sprite-1', 'sprite-2'],
-        allowEntity: false,
-        nextCellAvaible: false,
-        node: this.map[18][index].node,
-        playerMovementActive: this.map[0][index].playerMovementActive,
-      };
-      this.map[19][index] = {
-        sprites: ['sprite-1', 'sprite-3'],
-        allowEntity: false,
-        nextCellAvaible: false,
-        node: this.map[19][index].node,
-        playerMovementActive: this.map[0][index].playerMovementActive,
-      };
+    this.buildTreeColumn(1, 6, [3, 0], -10, 0, false, false, 2, 4);
 
-      for (let index = 2; index <= 16; ) {
-        this.map[index][0] = {
-          sprites: ['sprite-1', 'sprite-2'],
-          allowEntity: false,
-          nextCellAvaible: false,
-          node: this.map[index][0].node,
-          playerMovementActive: this.map[0][index].playerMovementActive,
-        };
-        this.map[index][1] = {
-          sprites: ['sprite-1', 'sprite-2'],
-          allowEntity: false,
-          nextCellAvaible: false,
-          node: this.map[index][1].node,
-          playerMovementActive: this.map[index][1].playerMovementActive,
-        };
-        index = index + 2;
-      }
-      for (let index = 3; index <= 17; ) {
-        this.map[index][0] = {
-          sprites: ['sprite-1', 'sprite-3'],
-          allowEntity: false,
-          nextCellAvaible: false,
-          node: this.map[index][0].node,
-          playerMovementActive: this.map[index][0].playerMovementActive,
-        };
-        this.map[index][1] = {
-          sprites: ['sprite-1', 'sprite-3'],
-          allowEntity: false,
-          nextCellAvaible: false,
-          node: this.map[index][1].node,
-          playerMovementActive: this.map[index][1].playerMovementActive,
-        };
-        index = index + 2;
-      }
+    // seconds tree
+    this.buildTreeColumn(1, 5, [0, 2], -27, 0, false, false, 3, 2);
 
-      for (let index = 2; index <= 16; ) {
-        this.map[index][28] = {
-          sprites: ['sprite-1', 'sprite-2'],
-          allowEntity: false,
-          nextCellAvaible: false,
-          node: this.map[index][28].node,
-          playerMovementActive: this.map[index][28].playerMovementActive,
-        };
-        this.map[index][29] = {
-          sprites: ['sprite-1', 'sprite-2'],
-          allowEntity: false,
-          nextCellAvaible: false,
-          node: this.map[index][29].node,
-          playerMovementActive: this.map[index][29].playerMovementActive,
-        };
-        index = index + 2;
-      }
-      for (let index = 3; index <= 17; ) {
-        this.map[index][28] = {
-          sprites: ['sprite-1', 'sprite-3'],
-          allowEntity: false,
-          nextCellAvaible: false,
-          node: this.map[index][28].node,
-          playerMovementActive: this.map[index][28].playerMovementActive,
-        };
-        this.map[index][29] = {
-          sprites: ['sprite-1', 'sprite-3'],
-          allowEntity: false,
-          nextCellAvaible: false,
-          node: this.map[index][29].node,
-          playerMovementActive: this.map[index][29].playerMovementActive,
-        };
-        index = index + 2;
-      }
+    this.buildTreeColumn(1, 1, [5, 2], -27, 0, false, true, 3, 2);
 
-      for (let index = 0; index <= 25; index++) {
-        this.map[10][index + 2] = {
-          sprites: ['sprite-1', 'sprite-4'],
-          allowEntity: true,
-          nextCellAvaible: false,
-          node: this.map[10][index + 2].node,
-          playerMovementActive: this.map[10][index + 2].playerMovementActive,
-        };
-        this.map[11][index + 2] = {
-          sprites: ['sprite-1', 'sprite-4'],
-          allowEntity: true,
-          nextCellAvaible: false,
-          node: this.map[11][index + 2].node,
-          playerMovementActive: this.map[11][index + 2].playerMovementActive,
-        };
-        this.map[12][index + 2] = {
-          sprites: ['sprite-1', 'sprite-4'],
-          allowEntity: true,
-          nextCellAvaible: false,
-          node: this.map[12][index + 2].node,
-          playerMovementActive: this.map[12][index + 2].playerMovementActive,
-        };
-        this.map[13][index + 2] = {
-          sprites: ['sprite-1', 'sprite-4'],
-          allowEntity: true,
-          nextCellAvaible: false,
-          node: this.map[13][index + 2].node,
-          playerMovementActive: this.map[13][index + 2].playerMovementActive,
-        };
-        this.map[14][index + 2] = {
-          sprites: ['sprite-1', 'sprite-4'],
-          allowEntity: true,
-          nextCellAvaible: false,
-          node: this.map[14][index + 2].node,
-          playerMovementActive: this.map[14][index + 2].playerMovementActive,
-        };
-        this.map[15][index + 2] = {
-          sprites: ['sprite-1', 'sprite-4'],
-          allowEntity: true,
-          nextCellAvaible: false,
-          node: this.map[15][index + 2].node,
-          playerMovementActive: this.map[15][index + 2].playerMovementActive,
-        };
-        this.map[16][index + 2] = {
-          sprites: ['sprite-1', 'sprite-4'],
-          allowEntity: true,
-          nextCellAvaible: false,
-          node: this.map[16][index + 2].node,
-          playerMovementActive: this.map[16][index + 2].playerMovementActive,
-        };
-        this.map[17][index + 2] = {
-          sprites: ['sprite-1', 'sprite-4'],
-          allowEntity: true,
-          nextCellAvaible: false,
-          node: this.map[17][index + 2].node,
-          playerMovementActive: this.map[17][index + 2].playerMovementActive,
-        };
-      }
+    // thirds tree
+    this.buildTreeColumn(1, 2, [0, 4], -44, 0, false, false, 1, 1);
 
-      const playerPositionX = this.mapService.playerPositionX;
-      const playerPositionY = this.mapService.playerPositionY;
-      const playerBasePosition = this.mapService.playerBasePosition;
+    // fourds tree
+    this.buildTreeColumn(1, 3, [2, 4], -44, 0, false, false, 4, 4);
 
-      this.map[playerPositionX][playerPositionY].player = true;
-      this.map[playerPositionX][playerPositionY].playerMovementActive = {
-        active: false,
-        class: playerBasePosition,
-      };
-    }
+    // 5
+    this.buildTreeColumn(1, 5, [0, 6], -64, 0, true, true, 2, 2);
+
+    console.log(this.map);
+
+    // Vertical gate
+    this.buildVerticalGate([0, 6], 0, -22);
+
+    this.buildTreeColumn(1, 4, [0, 9], 0, 0, false, false, 3, 3);
+
+    this.buildTreeColumn(1, 4, [0, 11], -17, 0, false, false, 2, 2);
+
+    this.buildTreeColumn(1, 4, [0, 13], -35, 0, false, false, 3, 3);
+
+    this.buildTreeColumn(1, 4, [0, 14], -22, 0, false, false, 4, 4);
+
+    this.buildTreeColumn(1, 4, [0, 15], -10, 0, false, false, 5, 5);
+
+    this.buildTreeColumn(1, 10, [0, 16], 0, 0, false, false, 6, 6);
+
+    this.buildTreeColumn(1, 10, [0, 17], 10, 0, false, false, 7, 7);
+
+    this.buildTreeColumn(1, 3, [7, 4], 10, 0, false, false, 7, 7);
+
+    this.buildRoad(1, [
+      [3, 6],
+      [9, 6],
+      [3, 8],
+      [9, 8],
+      [7, 14],
+      [9, 14],
+      [7, 8],
+    ]);
   }
 
   getMap(): PokemonMap[][] {

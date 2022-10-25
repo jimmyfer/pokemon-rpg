@@ -1,3 +1,7 @@
+@use './assets/scss/sprites/trees/trees';
+@use './assets/scss/sprites/buildings/gate';
+@use './assets/scss/sprites/floors/floors';
+
 $primary-color: white;
 $bg: black;
 h1 {
@@ -18,8 +22,8 @@ body {
 
   .game-screen {
     background-color: rgb(66, 66, 66);
-    width: 512px;
-    height: 512px;
+    width: 544px;
+    height: 544px;
     overflow: hidden;
     position: absolute;
   }
@@ -45,14 +49,14 @@ body {
       height: 52px;
       background: url('./assets/img/rocket.png') -135px -157px;
       background-size: 875px;
-      z-index: 2;
+      z-index: 99;
     }
 
     .player-base {
       position: absolute;
       top: -20px;
       background-size: 875px;
-      z-index: 2;
+      z-index: 99;
     }
 
     .player-left {
@@ -76,7 +80,6 @@ body {
 
     .player-right {
       background: url('./assets/img/rocket.png') -135px -157px;
-      z-index: 2;
     }
 
     .player-right-active {
@@ -95,7 +98,8 @@ body {
     }
 
     .player-down {
-      background: url('./assets/img/rocket.png') -135px -28px;
+      background: url('./assets/img/rocket.png');
+      background-position: -135px -28px;
     }
 
     .player-down-active {
@@ -133,43 +137,12 @@ body {
       background: url('./assets/img/rocket.png') -198px -220px;
     }
 
-    .sprite-1 {
+    .base-sprite-1 {
       position: absolute;
       width: 100%;
       height: 100%;
-      background: url('./assets/img/sprites.png') -2px -306px;
-      background-size: 1628px;
-    }
-
-    .sprite-2 {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: url('./assets/img/sprites.png') -300px -235px;
-      background-size: 1628px;
-    }
-    .sprite-3 {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: url('./assets/img/sprites.png') -300px -272px;
-      background-size: 1628px;
-    }
-    .sprite-4 {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: url('./assets/img/sprites.png') -36px -340px;
-      background-size: 1628px;
-      z-index: 1;
-    }
-    .sprite-5 {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: url('./assets/img/sprites.png') -70px -376px;
-      background-size: 1628px;
-      z-index: 3;
+      background: url('./assets/img/sprites.png');
+      background-position: -96px -2240px;
     }
   }
 }

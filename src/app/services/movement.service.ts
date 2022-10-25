@@ -1,4 +1,4 @@
-import { PokemonMap } from 'app/utilities/map-builder';
+import { PokemonMap } from '../core/map-builder/map-builder';
 import { PlayerMovement } from '../utilities/movement-helper';
 import { PokeMapService } from './map.service';
 
@@ -11,7 +11,7 @@ export class MovementService {
 
   playerMoving = false;
 
-  walkVelocity = 120;
+  walkVelocity = 60;
 
   constructor() {
     this.mapService = PokeMapService.getInstance();
@@ -141,6 +141,21 @@ export class MovementService {
         this.mapService.activeMap[playerPositionX][
           this.mapService.playerPositionY
         ];
+      try {
+        const borderMap =
+          this.mapService.activeMap[playerPositionX][
+            this.mapService.playerPositionY - 8
+          ];
+        const opositeBorderMap =
+          this.mapService.activeMap[playerPositionX][
+            this.mapService.playerPositionY + 9
+          ];
+        this.checkIfScreenShouldNotMove(
+          movementDirection,
+          borderMap,
+          opositeBorderMap
+        );
+      } catch {}
     }
 
     if (
@@ -154,6 +169,21 @@ export class MovementService {
         this.mapService.activeMap[playerPositionX][
           this.mapService.playerPositionY
         ];
+      try {
+        const borderMap =
+          this.mapService.activeMap[playerPositionX][
+            this.mapService.playerPositionY + 8
+          ];
+        const opositeBorderMap =
+          this.mapService.activeMap[playerPositionX][
+            this.mapService.playerPositionY - 9
+          ];
+        this.checkIfScreenShouldNotMove(
+          movementDirection,
+          borderMap,
+          opositeBorderMap
+        );
+      } catch {}
     }
 
     if (
@@ -167,6 +197,22 @@ export class MovementService {
         this.mapService.activeMap[this.mapService.playerPositionX][
           playerPositionY
         ];
+
+      try {
+        const borderMap =
+          this.mapService.activeMap[this.mapService.playerPositionX - 8][
+            playerPositionY
+          ];
+        const opositeBorderMap =
+          this.mapService.activeMap[this.mapService.playerPositionX + 9][
+            playerPositionY
+          ];
+        this.checkIfScreenShouldNotMove(
+          movementDirection,
+          borderMap,
+          opositeBorderMap
+        );
+      } catch {}
     }
 
     if (
@@ -180,10 +226,25 @@ export class MovementService {
         this.mapService.activeMap[this.mapService.playerPositionX][
           playerPositionY
         ];
+      try {
+        const borderMap =
+          this.mapService.activeMap[this.mapService.playerPositionX + 8][
+            playerPositionY
+          ];
+        const opositeBorderMap =
+          this.mapService.activeMap[this.mapService.playerPositionX - 9][
+            playerPositionY
+          ];
+
+        this.checkIfScreenShouldNotMove(
+          movementDirection,
+          borderMap,
+          opositeBorderMap
+        );
+      } catch {}
     }
 
     if (newPlayerPosition) {
-      this.mapService.movementListener.newPlayerMove(movementDirection);
       this.playerMoving = true;
       playerPosition.player = false;
       newPlayerPosition.player = true;
@@ -192,6 +253,16 @@ export class MovementService {
         newPlayerPosition,
         movementDirection
       );
+    }
+  }
+
+  checkIfScreenShouldNotMove(
+    movementDirection: PlayerMovement,
+    borderMap: PokemonMap | null,
+    opositeBorderMap: PokemonMap | null
+  ): void {
+    if (borderMap !== undefined && opositeBorderMap !== undefined) {
+      this.mapService.movementListener.newPlayerMove(movementDirection);
     }
   }
 

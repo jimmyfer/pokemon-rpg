@@ -1,5 +1,5 @@
 import { MovementSubject } from '../utilities/movement-helper';
-import { PokemonMap } from '../utilities/map-builder';
+import { PokemonMap } from '../core/map-builder/map-builder';
 
 export class PokeMapService {
   private static instance: PokeMapService;
